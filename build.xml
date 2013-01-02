@@ -1,0 +1,60 @@
+<project name="alabs-reporting-build" default="dist-saiku" basedir=".">
+
+	<description>
+    This build file is used to create bleeding edge reporting libraries
+  	for the saiku reporting project 2.x
+  </description>
+
+	<property file="override.properties"
+            description="Properties customized for your development environment belong in this file.  This file will never be checked into the SCM." />
+	<!-- Define the default location of the common build file -->
+	<property name="common.build.file" value="./build-res/subfloor.xml"
+            description="This is the location of the standardized build-res/subfloor.xml file"/>
+
+	<property name="project.dir" value="."/>
+	<property name="project.revision" value="ignore"/>
+	<property name="ivy.artifact.group" value="ignore"/>
+	<property name="ivy.artifact.id" value="ignore"/>
+	<property name="impl.title" value="ignore"/>
+	<property name="impl.productID" value="ignore"/>
+
+	<!-- Import the build-res/subfloor.xml file which contains all the default tasks -->
+	<import file="${common.build.file}"/>
+
+	<target name="clean-sources">
+		<delete dir="${project.dir}/libraries"/>
+		<delete dir="${project.dir}/lib"/>
+		<delete dir="${project.dir}/test-lib"/>
+		<delete dir="${project.dir}/dev-lib"/>
+		<delete dir="${project.dir}/engines"/>
+		<delete dir="${project.dir}/tools"/>
+	</target>
+
+	<target name="checkout-trunk" depends="install-svnant"
+       description="Run a global 'SVN CHECKOUT' on all project modules for TRUNK.">
+
+		<mkdir dir="${project.dir}/libraries"/>
+		<mkdir dir="${project.dir}/engines"/>
+		<mkdir dir="${project.dir}/tools"/>
+
+		<svn javahl="${svnant.use-javahl}" svnkit="${svnant.use-svnkit}"
+         username="${svnant.username}" password="${svnant.password}">
+			<checkout url="svn://source.pentaho.org/pentaho-reporting/libraries/trunk"
+                destPath="${project.dir}/libraries"/>
+			<checkout url="svn://source.pentaho.org/pentaho-reporting/engines/classic/trunk"
+                destPath="${project.dir}/engines/classic"/>
+			<checkout url="svn://source.pentaho.org/pentaho-reporting/tools/report-design-wizard/trunk"
+                destPath="${project.dir}/tools/report-design-wizard"/>
+		</svn>
+	</target>
+
+	<target name="dist-saiku" depends="clean, checkout-trunk">
+		<ant dir="${project.dir}/libraries" antfile="build.xml" target="resolve" inheritAll="false" inheritRefs="false"/>
+		<ant dir="${project.dir}/libraries" antfile="build.xml" target="dist" inheritAll="false" inheritRefs="false"/>
+		<ant dir="${project.dir}/engines/classic" antfile="build.xml" target="resolve" inheritAll="false" inheritRefs="false"/>
+		<ant dir="${project.dir}/engines/classic" antfile="build.xml" target="dist" inheritAll="false" inheritRefs="false"/>
+		<ant dir="${project.dir}/tools/report-design-wizard" antfile="build.xml" target="resolve" inheritAll="false" inheritRefs="false"/>
+		<ant dir="${project.dir}/tools/report-design-wizard" antfile="build.xml" target="dist" inheritAll="false" inheritRefs="false"/>
+	</target>
+
+</project>
