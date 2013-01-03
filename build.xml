@@ -53,11 +53,11 @@
 			<fileset dir="${project.dir}/patch" includes="build.properties" />
 		</copy>
 		<ant dir="${project.dir}/libraries" antfile="build.xml" target="resolve" inheritAll="false" inheritRefs="false"/>
-		<ant dir="${project.dir}/libraries" antfile="build.xml" target="dist" inheritAll="false" inheritRefs="false"/>
+		<ant dir="${project.dir}/libraries" antfile="build.xml" target="publish-local" inheritAll="false" inheritRefs="false"/>		
 		<ant dir="${project.dir}/engines/classic" antfile="build.xml" target="resolve" inheritAll="false" inheritRefs="false"/>
-		<ant dir="${project.dir}/engines/classic" antfile="build.xml" target="dist" inheritAll="false" inheritRefs="false"/>
+		<ant dir="${project.dir}/engines/classic" antfile="build.xml" target="publish-local" inheritAll="false" inheritRefs="false"/>
 		<ant dir="${project.dir}/tools/report-design-wizard" antfile="build.xml" target="resolve" inheritAll="false" inheritRefs="false"/>
-		<ant dir="${project.dir}/tools/report-design-wizard" antfile="build.xml" target="dist" inheritAll="false" inheritRefs="false"/>
+		<ant dir="${project.dir}/tools/report-design-wizard" antfile="build.xml" target="publish-local" inheritAll="false" inheritRefs="false"/>
 	</target>
 
 </project>
